@@ -154,33 +154,33 @@ describe Flame::Dispatcher do
 				@respond = @init.call(method: 'OPTIONS').run!.last
 			end
 
-			should 'return 200 for existing route' do
+			it 'returns 200 for existing route' do
 				@respond.status.should.equal 200
 			end
 
-			should 'return 404 for not-existing route' do
+			it 'returns 404 for not-existing route' do
 				dispatcher = @init.call(method: 'OPTIONS', path: '/hello')
 				respond = dispatcher.run!.last
 				respond.status.should.equal 404
 			end
 
-			should 'not return body' do
+			it 'does not return body' do
 				@respond.body.should.equal ['']
 			end
 
-			should 'contain `Allow` header with appropriate HTTP-methods' do
+			it 'contains `Allow` header with appropriate HTTP-methods' do
 				dispatcher = @init.call(method: 'OPTIONS', path: '/')
 				respond = dispatcher.run!.last
 				respond.headers['Allow'].should.equal 'GET, POST, OPTIONS'
 			end
 
-			should 'not return `Allow` header for not-existing route' do
+			it 'does not return `Allow` header for not-existing route' do
 				dispatcher = @init.call(method: 'OPTIONS', path: '/hello')
 				respond = dispatcher.run!.last
 				respond.headers.key?('Allow').should.equal false
 			end
 
-			should 'return `Allow` header for route with optional parameters' do
+			it 'returns `Allow` header for route with optional parameters' do
 				dispatcher = @init.call(method: 'OPTIONS', path: '/baz')
 				respond = dispatcher.run!.last
 				respond.headers.key?('Allow').should.equal true
@@ -340,7 +340,7 @@ describe Flame::Dispatcher do
 			@dispatcher.default_body.should.equal '<h1>Internal Server Error</h1>'
 		end
 
-		should 'not be called from `execute`' do
+		it 'does not be called from `execute`' do
 			dispatcher = @init.call(path: 'redirect_from_before')
 			dispatcher.run!
 			dispatcher.request.env[:execute_before_called].should.equal 1

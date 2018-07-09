@@ -55,12 +55,12 @@ describe Flame::Router::Routes do
 
 	describe '#navigate' do
 		describe 'for path without arguments' do
-			should 'works with Path Part argument' do
+			it 'works with Path Part argument' do
 				path = Flame::Path.new('/foo/bar')
 				@routes.navigate(*path.parts).should.equal('baz' => {})
 			end
 
-			should 'works with String argument' do
+			it 'works with String argument' do
 				@routes.navigate('foo', 'bar').should.equal('baz' => {})
 			end
 		end
@@ -68,12 +68,12 @@ describe Flame::Router::Routes do
 		describe 'for path with arguments' do
 			let(:routes) { @init.call('/:first/:second') }
 
-			should 'works with Path Part argument' do
+			it 'works with Path Part argument' do
 				path = Flame::Path.new('/foo')
 				routes.navigate(*path.parts).should.equal(':second' => {})
 			end
 
-			should 'works with String argument' do
+			it 'works with String argument' do
 				routes.navigate('foo').should.equal(':second' => {})
 			end
 		end
@@ -81,21 +81,21 @@ describe Flame::Router::Routes do
 		describe 'for path with optional argument at beginning' do
 			let(:routes) { @init.call('/:?first/second/third') }
 
-			should 'works with Path Part argument' do
+			it 'works with Path Part argument' do
 				path = Flame::Path.new('/second')
 				routes.navigate(*path.parts).should.equal('third' => {})
 			end
 
-			should 'works with String argument' do
+			it 'works with String argument' do
 				routes.navigate('second').should.equal('third' => {})
 			end
 		end
 
-		should 'works for root path' do
+		it 'works for root path' do
 			@routes.navigate('/').should.equal('foo' => { 'bar' => { 'baz' => {} } })
 		end
 
-		should 'return nested routes from path' do
+		it 'returns nested routes from path' do
 			routes = @init.call(['/foo', '/:?var', '/bar'])
 			routes.navigate('/foo').should.equal routes['foo'][':?var']
 			routes.navigate('/foo/some').should.equal routes['foo'][':?var']
@@ -103,20 +103,20 @@ describe Flame::Router::Routes do
 				.should.equal routes['foo'][':?var']['bar']
 		end
 
-		should 'return nil for not-existing path' do
+		it 'returns nil for not-existing path' do
 			@routes.navigate('/foo/baz').should.be.nil
 		end
 	end
 
 	describe '#allow' do
-		should 'return correct String for multiple allow HTTP-methods' do
+		it 'returns correct String for multiple allow HTTP-methods' do
 			routes = @init.call('/foo/bar')
 			routes['foo']['bar'][:GET]  = 42
 			routes['foo']['bar'][:POST] = 84
 			routes['foo']['bar'].allow.should.equal 'GET, POST, OPTIONS'
 		end
 
-		should 'return nil for not-existing path' do
+		it 'returns nil for not-existing path' do
 			@routes['foo']['bar'].allow.should.be.nil
 		end
 	end

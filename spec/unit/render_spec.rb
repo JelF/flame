@@ -126,14 +126,14 @@ describe Flame::Render do
 				)
 		end
 
-		should 'receive block for template' do
+		it 'receives block for template' do
 			render = @init.call(:_partial_with_block)
 			render.render { 'world' }.should.equal(
 				"<h1>Hello, world!</h1>\n"
 			)
 		end
 
-		should 'render by relative name' do
+		it 'renders by relative name' do
 			render = @init.call('namespace/_will_render_nested')
 			render.render.should.be.equal <<~CONTENT
 				Hello!

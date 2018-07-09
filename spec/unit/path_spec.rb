@@ -49,12 +49,12 @@ describe Flame::Path do
 		end
 
 		describe 'with path as Flame::Path' do
-			should 'works' do
+			it 'works' do
 				path = @init.call('/foo/bar')
 				@init.call(path).to_s.should.equal path
 			end
 
-			should 'not return the same object' do
+			it 'does not return the same object' do
 				path = @init.call('/foo/bar')
 				@init.call(path).to_s.should.not.be.same_as path
 			end
@@ -84,23 +84,23 @@ describe Flame::Path do
 				@part = Flame::Path.new('/:?fourth')
 			end
 
-			should 'return new concatenated Flame::Path' do
+			it 'returns new concatenated Flame::Path' do
 				result = @path + @part
 				expected = Flame::Path.new('/foo/:first/:second/:?third/:?fourth')
 				result.should.equal expected
 			end
 
-			should 'return new instance of Flame::Path' do
+			it 'returns new instance of Flame::Path' do
 				result = @path + @part
 				result.should.be.kind_of Flame::Path
 			end
 
-			should 'not be the same as the first part' do
+			it 'does not be the same as the first part' do
 				result = @path + @part
 				result.should.not.be.same_as @path
 			end
 
-			should 'not be the same as the second part' do
+			it 'does not be the same as the second part' do
 				result = @path + @part
 				result.should.not.be.same_as @part
 			end
@@ -111,18 +111,18 @@ describe Flame::Path do
 				@part = '/:?fourth'
 			end
 
-			should 'return new concatenated Flame::Path' do
+			it 'returns new concatenated Flame::Path' do
 				result = @path + @part
 				expected = Flame::Path.new('/foo/:first/:second/:?third/:?fourth')
 				result.should.equal expected
 			end
 
-			should 'return new instance of Flame::Path' do
+			it 'returns new instance of Flame::Path' do
 				result = @path + @part
 				result.should.be.kind_of Flame::Path
 			end
 
-			should 'not be the same as the first part' do
+			it 'does not be the same as the first part' do
 				result = @path + @part
 				result.should.not.be.same_as @path
 			end
@@ -218,25 +218,25 @@ describe Flame::Path do
 			).should.equal Hash[first: 'another bar', second: 'baz']
 		end
 
-		should 'extract missing optional argument before static part as nil' do
+		it 'extracts missing optional argument before static part as nil' do
 			@init.call('/foo/:?bar/baz').extract_arguments(
 				@init.call('/foo/baz')
 			).should.equal Hash[bar: nil]
 		end
 
-		should 'extract arguments after optional argument at start correctly' do
+		it 'extracts arguments after optional argument at start correctly' do
 			@init.call('/:?foo/bar/:?baz/qux/:id').extract_arguments(
 				@init.call('/bar/baz/qux/2')
 			).should.equal Hash[foo: nil, baz: 'baz', id: '2']
 		end
 
-		should 'extract optional argument after missing optional argument' do
+		it 'extracts optional argument after missing optional argument' do
 			@init.call('/:?foo/bar/:?baz').extract_arguments(
 				@init.call('/bar/baz')
 			).should.equal Hash[foo: nil, baz: 'baz']
 		end
 
-		should 'not return optional argument for path with slash at the end' do
+		it 'does not return optional argument for path with slash at the end' do
 			@path.extract_arguments(
 				@init.call('/foo/bar/baz//')
 			).should.equal Hash[first: 'bar', second: 'baz']

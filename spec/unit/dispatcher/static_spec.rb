@@ -15,8 +15,8 @@ describe Flame::Dispatcher::Static do
 		@result = @dispatcher.send(:try_static)
 	end
 
-	shared 'response with Cache-Control' do
-		should 'have Cache-Control with public and max-age value' do
+	shared_examples 'response with Cache-Control' do
+		it 'has Cache-Control with public and max-age value' do
 			@dispatcher.response[Rack::CACHE_CONTROL]
 				.should.equal 'public, max-age=31536000'
 		end
@@ -53,7 +53,7 @@ describe Flame::Dispatcher::Static do
 			@dispatcher.response['Last-Modified'].should.equal file_mtime.httpdate
 		end
 
-		behaves_like 'response with Cache-Control'
+		it_behaves_like 'response with Cache-Control'
 	end
 
 	describe 'cached' do
@@ -70,7 +70,7 @@ describe Flame::Dispatcher::Static do
 			@dispatcher.body.should.equal ''
 		end
 
-		behaves_like 'response with Cache-Control'
+		it_behaves_like 'response with Cache-Control'
 	end
 
 	it 'should not found non-existing file' do

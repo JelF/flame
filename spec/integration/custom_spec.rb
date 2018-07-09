@@ -98,7 +98,7 @@ describe CustomController do
 		last_response.body.should.be.empty
 	end
 
-	should 'return redirect with halt to foo from `not_found`' do
+	it 'returns redirect with halt to foo from `not_found`' do
 		get '/custom/redirecting'
 		last_response.should.be.redirect
 		last_response.body.should.equal 'Some page about 302 code'
